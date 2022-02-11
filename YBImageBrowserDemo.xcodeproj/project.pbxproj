@@ -70,6 +70,7 @@
 		23F26AD222D7208700C27C21 /* YBIBVideoActionBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F26AD122D7208700C27C21 /* YBIBVideoActionBar.m */; };
 		23F5A00D23161D51003F0FAE /* YBIBDefaultWebImageMediator.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F5A00C23161D51003F0FAE /* YBIBDefaultWebImageMediator.m */; };
 		23FF103622F6B6FC0091331F /* TestFController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23FF103522F6B6FC0091331F /* TestFController.m */; };
+		5C5FA03727B63AC800F639F2 /* YBImageBrowser.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 5C5FA03627B63AC800F639F2 /* YBImageBrowser.podspec */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -219,6 +220,7 @@
 		23FC590B23B05EBD00F42054 /* YBIBVideoCell+Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "YBIBVideoCell+Internal.h"; sourceTree = "<group>"; };
 		23FF103422F6B6FC0091331F /* TestFController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestFController.h; sourceTree = "<group>"; };
 		23FF103522F6B6FC0091331F /* TestFController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestFController.m; sourceTree = "<group>"; };
+		5C5FA03627B63AC800F639F2 /* YBImageBrowser.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = YBImageBrowser.podspec; sourceTree = "<group>"; };
 		97542AA3FE46C41411B15C5D /* Pods_YBImageBrowserDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_YBImageBrowserDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7455F1D491BFCA198544CA1 /* Pods-YBImageBrowserDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YBImageBrowserDemo.debug.xcconfig"; path = "Target Support Files/Pods-YBImageBrowserDemo/Pods-YBImageBrowserDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		F2A1E10DD2C568E5493980E0 /* Pods-YBImageBrowserDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YBImageBrowserDemo.release.xcconfig"; path = "Target Support Files/Pods-YBImageBrowserDemo/Pods-YBImageBrowserDemo.release.xcconfig"; sourceTree = "<group>"; };
@@ -393,6 +395,7 @@
 		23B326F322A768F4008BFF5D = {
 			isa = PBXGroup;
 			children = (
+				5C5FA03627B63AC800F639F2 /* YBImageBrowser.podspec */,
 				23B326FE22A768F4008BFF5D /* YBImageBrowserDemo */,
 				23B326FD22A768F4008BFF5D /* Products */,
 				9A38309A58D899EE4318D182 /* Pods */,
@@ -679,6 +682,7 @@
 				23028E1222DD90EC00C745ED /* localVideo0.mp4 in Resources */,
 				23CC350322DC71220037018B /* localImage0.jpg in Resources */,
 				23B3270722A768F4008BFF5D /* Main.storyboard in Resources */,
+				5C5FA03727B63AC800F639F2 /* YBImageBrowser.podspec in Resources */,
 				23CC34E222DC2D6D0037018B /* BaseListCell.xib in Resources */,
 				23ABA2BC22D0BAB700535F6A /* YBImageBrowser.bundle in Resources */,
 				23CC350822DC7CAF0037018B /* TestCustomCell.xib in Resources */,

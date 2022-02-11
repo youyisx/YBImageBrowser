@@ -47,6 +47,7 @@
 @implementation YBIBVideoCell {
     CGPoint _interactStartPoint;
     BOOL _interacting;
+    CGRect _videoBounds;
 }
 
 #pragma mark - life cycle
@@ -67,7 +68,10 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-    self.videoView.frame = self.bounds;
+    CGRect bounds = self.bounds;
+    if (CGRectEqualToRect(bounds, _videoBounds)) return;
+    _videoBounds = bounds;
+    self.videoView.frame = _videoBounds;
 }
 
 - (void)initValue {
