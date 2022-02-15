@@ -58,7 +58,8 @@ typedef void (^YBIBVideoSingleTouchBlock)(YBIBVideoData *videoData);
 
 /// 是否要隐藏播放时的叉叉（取消）按钮
 @property (nonatomic, assign) BOOL shouldHideForkButton;
-
+/// 从相册获取视频资源
+- (void)loadAVAssetFromPHAsset;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -36,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)yb_autoPlayCountChanged:(NSUInteger)count;
 
+- (void)yb_requestLoadVideoAssetForVideoView:(YBIBVideoView *)view;
 @end
 
 @interface YBIBVideoView : UIView

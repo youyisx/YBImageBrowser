@@ -24,6 +24,7 @@
     AVPlayerItem *_playerItem;
     AVPlayerLayer *_playerLayer;
     BOOL _active;
+    BOOL _reqeustPlay;
 }
 
 #pragma mark - life cycle
@@ -52,6 +53,7 @@
 }
 
 - (void)initValue {
+    _reqeustPlay = NO;
     _playing = NO;
     _active = YES;
     _needAutoPlay = NO;
@@ -79,7 +81,7 @@
     _playerItem = nil;
     [_playerLayer removeFromSuperlayer];
     _playerLayer = nil;
-
+    _reqeustPlay = NO;
     [self finishPlay];
 }
 
@@ -112,6 +114,13 @@
 }
 
 - (void)preparPlay {
+    if (self.asset== nil) {
+        _reqeustPlay = true;
+        self.playButton.hidden = YES;
+        [self.delegate yb_requestLoadVideoAssetForVideoView:self];
+        return;
+    }
+    _reqeustPlay = NO;
     _preparingPlay = YES;
     _playFailed = NO;
     
@@ -163,6 +172,14 @@
         [_player pause];
         [self.actionBar pause];
     }
+}
+
+- (void)closePlayer {
+    [self playerPause];
+    _playing = NO;
+    self.playButton.hidden = NO;
+    self.actionBar.hidden = YES;
+    self.topBar.hidden = YES;
 }
 
 - (BOOL)autoPlay {
@@ -229,7 +246,16 @@
 }
 
 - (void)playerItemStatusChanged {
-    if (!_active) return;
+    if (!_active) {
+        if (_playerItem.status == AVPlayerItemStatusReadyToPlay) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                /// 清除加载loading
+                [self closePlayer];
+                [self.delegate yb_cancelledForVideoView:self];
+            });
+        }
+        return;
+    }
     
     _preparingPlay = NO;
     
@@ -312,6 +338,7 @@
 }
 
 - (void)clickCancelButton:(UIButton *)button {
+    [self closePlayer];
     [self.delegate yb_cancelledForVideoView:self];
 }
 
@@ -335,9 +362,15 @@
     if (!asset) return;
     if (self.needAutoPlay) {
         if (![self autoPlay]) {
-            self.playButton.hidden = NO;
+            if (_reqeustPlay) {
+                [self preparPlay];
+            } else {
+                self.playButton.hidden = NO;
+            }
         }
         self.needAutoPlay = NO;
+    } else if (_reqeustPlay) {
+        [self preparPlay];
     } else {
         self.playButton.hidden = NO;
     }
@@ -373,7 +406,6 @@
         _playButton.bounds = CGRectMake(0, 0, 100, 100);
         [_playButton setImage:YBIBIconManager.sharedManager.videoBigPlayImage() forState:UIControlStateNormal];
         [_playButton addTarget:self action:@selector(clickPlayButton:) forControlEvents:UIControlEventTouchUpInside];
-        _playButton.hidden = YES;
         _playButton.layer.shadowColor = UIColor.darkGrayColor.CGColor;
         _playButton.layer.shadowOffset = CGSizeMake(0, 1);
         _playButton.layer.shadowOpacity = 1;

@@ -36,11 +36,11 @@
         [resultArray addObjectsFromArray:assets];
     }];
     
-    PHFetchResult *smartAlbumsFetchResult1 = [PHAssetCollection fetchTopLevelUserCollectionsWithOptions:nil];
-    [smartAlbumsFetchResult1 enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(PHAssetCollection * _Nonnull collection, NSUInteger idx, BOOL *stop) {
-        NSArray<PHAsset *> *assets = [self getAssetsInAssetCollection:collection];
-        [resultArray addObjectsFromArray:assets];
-    }];
+//    PHFetchResult *smartAlbumsFetchResult1 = [PHAssetCollection fetchTopLevelUserCollectionsWithOptions:nil];
+//    [smartAlbumsFetchResult1 enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(PHAssetCollection * _Nonnull collection, NSUInteger idx, BOOL *stop) {
+//        NSArray<PHAsset *> *assets = [self getAssetsInAssetCollection:collection];
+//        [resultArray addObjectsFromArray:assets];
+//    }];
     
     return resultArray;
 }

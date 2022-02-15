@@ -42,6 +42,7 @@
 
 
 @interface YBIBVideoCell () <YBIBVideoDataDelegate, YBIBVideoViewDelegate, UIGestureRecognizerDelegate>
+@property (nonatomic, assign) BOOL willShowLoading;
 @end
 
 @implementation YBIBVideoCell {
@@ -77,9 +78,11 @@
 - (void)initValue {
     _interactStartPoint = CGPointZero;
     _interacting = NO;
+    _willShowLoading = NO;
 }
 
 - (void)prepareForReuse {
+    _willShowLoading = NO;
     ((YBIBVideoData *)self.yb_cellData).delegate = nil;
     self.videoView.thumbImageView.image = nil;
     [self hideAuxiliaryView];
@@ -187,6 +190,7 @@
         [self.videoView reset];
         [self hideToolViews:NO];
         [self.yb_auxiliaryViewHandler() yb_hideLoadingWithContainer:self];
+        self.willShowLoading = NO;
         if (_interacting) [self restoreGestureInteractionWithDuration:0];
         self.videoView.needAutoPlay = NO;
     } else {
@@ -208,6 +212,7 @@
 
 - (void)yb_finishLoadingFirstFrameForData:(YBIBVideoData *)data {
     [self.yb_auxiliaryViewHandler() yb_hideLoadingWithContainer:self];
+    self.willShowLoading = NO;
 }
 
 - (void)yb_videoData:(YBIBVideoData *)data downloadingWithProgress:(CGFloat)progress {
@@ -216,9 +221,11 @@
 
 - (void)yb_finishDownloadingForData:(YBIBVideoData *)data {
     [self.yb_auxiliaryViewHandler() yb_hideLoadingWithContainer:self];
+    self.willShowLoading = NO;
 }
 
 - (void)yb_videoData:(YBIBVideoData *)data readyForAVAsset:(AVAsset *)asset {
+    [self yb_finishDownloadingForData:data];
     self.videoView.asset = asset;
 }
 
@@ -236,6 +243,7 @@
 
 - (void)yb_videoIsInvalidForData:(YBIBVideoData *)data {
     [self.yb_auxiliaryViewHandler() yb_hideLoadingWithContainer:self];
+    self.willShowLoading = NO;
     NSString *imageIsInvalid = [YBIBCopywriter sharedCopywriter].videoIsInvalid;
     if (self.videoView.thumbImageView.image) {
         [self.yb_auxiliaryViewHandler() yb_showIncorrectToastWithContainer:self text:imageIsInvalid];
@@ -246,13 +254,20 @@
 
 #pragma mark - <YBIBVideoViewDelegate>
 
+- (void)yb_requestLoadVideoAssetForVideoView:(YBIBVideoView *)view {
+    [self yb_preparePlayForVideoView:view];
+    YBIBVideoData *data = (YBIBVideoData *)self.yb_cellData;
+    [data loadAVAssetFromPHAsset];
+}
+
 - (BOOL)yb_isFreezingForVideoView:(YBIBVideoView *)view {
     return self.yb_isTransitioning();
 }
 
 - (void)yb_preparePlayForVideoView:(YBIBVideoView *)view {
+    self.willShowLoading = YES;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (!view.isPlaying && !view.isPlayFailed && self.yb_selfPage() == self.yb_currentPage()) {
+        if (self.willShowLoading && !view.isPlaying && !view.isPlayFailed && self.yb_selfPage() == self.yb_currentPage()) {
             [self.yb_auxiliaryViewHandler() yb_showLoadingWithContainer:self];
         }
     });
@@ -263,6 +278,7 @@
     [self.yb_backView ybib_videoPlayingAdd:self];
     [self.yb_auxiliaryViewHandler() yb_hideLoadingWithContainer:self];
     [self hideToolViews:YES];
+    self.willShowLoading = NO;
 }
 
 - (void)yb_didPlayToEndTimeForVideoView:(YBIBVideoView *)view {
@@ -285,6 +301,7 @@
 - (void)yb_playFailedForVideoView:(YBIBVideoView *)view {
     [self.yb_auxiliaryViewHandler() yb_hideLoadingWithContainer:self];
     [self.yb_auxiliaryViewHandler() yb_showIncorrectToastWithContainer:self text:YBIBCopywriter.sharedCopywriter.videoError];
+    self.willShowLoading = NO;
 }
 
 - (void)yb_respondsToTapGestureForVideoView:(YBIBVideoView *)view {
@@ -299,9 +316,10 @@
 }
 
 - (void)yb_cancelledForVideoView:(YBIBVideoView *)view {
-    if (self.yb_isRotating()) return;
-    
-    [self hideBrowser];
+    [self.yb_backView ybib_videoPlayingRemove:self];
+    [self hideToolViews:NO];
+    [self.yb_auxiliaryViewHandler() yb_hideLoadingWithContainer:self];
+    self.willShowLoading = NO;
 }
 
 - (CGSize)yb_containerSizeForVideoView:(YBIBVideoView *)view {

@@ -48,12 +48,9 @@ extern CGImageRef YYCGImageCreateDecodedCopy(CGImageRef imageRef, BOOL decodeFor
 - (void)loadData {
     // Always load 'thumbImage'.
     [self loadThumbImage];
-    
     if (self.videoAVAsset) {
         [self.delegate yb_videoData:self readyForAVAsset:self.videoAVAsset];
-    } else if (self.videoPHAsset) {
-        [self loadAVAssetFromPHAsset];
-    } else {
+    } else if (self.videoPHAsset == nil) {
         [self.delegate yb_videoIsInvalidForData:self];
     }
 }
