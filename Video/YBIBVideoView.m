@@ -176,10 +176,7 @@
 
 - (void)closePlayer {
     [self playerPause];
-    _playing = NO;
-    self.playButton.hidden = NO;
-    self.actionBar.hidden = YES;
-    self.topBar.hidden = YES;
+    [self finishPlay];
 }
 
 - (BOOL)autoPlay {
@@ -251,7 +248,6 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 /// 清除加载loading
                 [self closePlayer];
-                [self.delegate yb_cancelledForVideoView:self];
             });
         }
         return;
@@ -339,7 +335,6 @@
 
 - (void)clickCancelButton:(UIButton *)button {
     [self closePlayer];
-    [self.delegate yb_cancelledForVideoView:self];
 }
 
 - (void)clickPlayButton:(UIButton *)button {

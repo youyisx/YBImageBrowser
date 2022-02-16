@@ -182,7 +182,7 @@
 }
 
 - (UIView *)yb_foregroundView {
-    return self.videoView.thumbImageView;
+    return self.videoView;
 }
 
 - (void)yb_pageChanged {
@@ -296,6 +296,8 @@
 - (void)yb_finishPlayForVideoView:(YBIBVideoView *)view {
     [self.yb_backView ybib_videoPlayingRemove:self];
     [self hideToolViews:NO];
+    [self.yb_auxiliaryViewHandler() yb_hideLoadingWithContainer:self];
+    self.willShowLoading = NO;
 }
 
 - (void)yb_playFailedForVideoView:(YBIBVideoView *)view {
@@ -313,13 +315,6 @@
     } else {
         [self hideBrowser];
     }
-}
-
-- (void)yb_cancelledForVideoView:(YBIBVideoView *)view {
-    [self.yb_backView ybib_videoPlayingRemove:self];
-    [self hideToolViews:NO];
-    [self.yb_auxiliaryViewHandler() yb_hideLoadingWithContainer:self];
-    self.willShowLoading = NO;
 }
 
 - (CGSize)yb_containerSizeForVideoView:(YBIBVideoView *)view {

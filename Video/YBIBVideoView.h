@@ -30,8 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)yb_respondsToTapGestureForVideoView:(YBIBVideoView *)view;
 
-- (void)yb_cancelledForVideoView:(YBIBVideoView *)view;
-
 - (CGSize)yb_containerSizeForVideoView:(YBIBVideoView *)view;
 
 - (void)yb_autoPlayCountChanged:(NSUInteger)count;
