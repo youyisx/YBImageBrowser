@@ -211,7 +211,7 @@
 - (void)addObserverForPlayer {
     [_playerItem addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
     __weak typeof(self) wSelf = self;
-    [_player addPeriodicTimeObserverForInterval:CMTimeMake(1, 1) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
+    [_player addPeriodicTimeObserverForInterval:CMTimeMake(30, 60) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
         __strong typeof(wSelf) self = wSelf;
         if (!self) return;
         float currentTime = time.value / time.timescale;
