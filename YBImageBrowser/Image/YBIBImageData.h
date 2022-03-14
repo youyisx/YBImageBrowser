@@ -33,7 +33,8 @@ typedef void (^YBIBImageModifierBlock)(YBIBImageData *imageData, UIImage *image,
 
 /// 单击事件的处理闭包
 typedef void (^YBIBImageSingleTouchBlock)(YBIBImageData *imageData);
-
+/// 双击事件处理闭包
+typedef void (^YBIBImageTapDoubleTouchBlock)(YBIBImageData *imageData);
 /// 内部图片滚动视图状态回调闭包
 typedef void (^YBIBImageScrollViewStatusBlock)(YBIBImageData *imageData, UIScrollView *scrollView);
 
