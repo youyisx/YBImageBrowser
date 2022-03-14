@@ -322,7 +322,10 @@
 
 - (void)respondsToTapDouble:(UITapGestureRecognizer *)tap {
     if (self.yb_isRotating()) return;
-    
+    YBIBImageData *data = self.yb_cellData;
+    if (data.tapDoubleTouchBlock && data.tapDoubleTouchBlock(data) == NO) {
+        return;
+    }
     [self hideTailoringImageView];
     
     UIScrollView *scrollView = self.imageScrollView;
