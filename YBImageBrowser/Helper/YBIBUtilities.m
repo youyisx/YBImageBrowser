@@ -91,11 +91,28 @@ CGFloat YBIBSafeAreaBottomHeight(void) {
 }
 
 UIImage *YBIBSnapshotView(UIView *view) {
-    UIGraphicsBeginImageContextWithOptions(view.bounds.size, YES, [UIScreen mainScreen].scale);
-    [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:NO];
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return image;
+    CGSize size = view.bounds.size;
+    if (@available(iOS 10.0, *)) {
+        UIGraphicsImageRendererFormat *format = [[UIGraphicsImageRendererFormat alloc] init];
+        format.opaque = NO;
+        format.scale = UIScreen.mainScreen.scale;
+        UIGraphicsImageRenderer *render = [[UIGraphicsImageRenderer alloc] initWithSize:size format:format];
+        UIImage *image = [render imageWithActions:^(UIGraphicsImageRendererContext * _Nonnull rendererContext) {
+            CGRect rect = CGRectMake(0, 0, size.width, size.height);
+            [[UIColor clearColor] setFill];
+            UIRectFill(rect);
+        }];
+        return image;
+    } else {
+        if (CGSizeEqualToSize(CGSizeZero, size)) {
+            size = CGSizeMake(1, 1);
+        }
+        UIGraphicsBeginImageContextWithOptions(size, YES, [UIScreen mainScreen].scale);
+        [view drawViewHierarchyInRect:CGRectMake(0, 0, size.width, size.height) afterScreenUpdates:NO];
+        UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        return image;
+    }
 }
 
 UIEdgeInsets YBIBPaddingByBrowserOrientation(UIDeviceOrientation orientation) {

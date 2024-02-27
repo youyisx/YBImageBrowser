@@ -114,7 +114,9 @@ static dispatch_queue_t YBIBImageProcessingQueue(void) {
     self.loadingStatus = YBIBImageLoadingStatusCompressing;
     __weak typeof(self) wSelf = self;
     CGSize size = [self bestSizeOfCompressing];
-
+    if (CGSizeEqualToSize(CGSizeZero, size)) {
+        size = CGSizeMake(1, 1);
+    }
     YBIB_DISPATCH_ASYNC(YBIBImageProcessingQueue(), ^{
         if (self->_freezing) {
             self.loadingStatus = YBIBImageLoadingStatusNone;
@@ -426,6 +428,9 @@ static dispatch_queue_t YBIBImageProcessingQueue(void) {
         }
         
         // Ensure the best display effect.
+        if (CGSizeEqualToSize(CGSizeZero, size)) {
+            size = CGSizeMake(1, 1);
+        }
         UIGraphicsBeginImageContextWithOptions(size, NO, UIScreen.mainScreen.scale);
         [tmpImage drawInRect:CGRectMake(0, 0, size.width, size.height)];
         if (isCancelled()) {
